@@ -27,15 +27,28 @@ CREATE TABLE "orders" (
     "shipping_address" TEXT,
 
     PRIMARY KEY("id"),
-    FOREIGN KEY("client_id") REFERENCES "clients"("id"),
+    FOREIGN KEY("client_id") REFERENCES "clients"("id")
 );
 
--- Client Measurements table, stores additional measurements or details related to clients
--- Assumes that each measurement is uniquely identified and associated with a client
+-- Client Measurements table, stores measurements related to clients.
+-- The composite primary key (client_id, measured_date) ensures that each client
+-- can have only one set of measurements per date.
 CREATE TABLE "client_measurements" (
-    "id" INTEGER,
     "client_id" INTEGER,
+    "measured_date" NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    PRIMARY KEY("id"),
+    "height" NUMERIC(5, 2),
+    "chest" NUMERIC(5, 2),
+    "waist" NUMERIC(5, 2),
+    "hips" NUMERIC(5, 2),
+    "neck" NUMERIC(5, 2),
+    "sleeve" NUMERIC(5, 2),
+    "back" NUMERIC(5, 2),
+    "front_waist" NUMERIC(5, 2),
+    "back_waist" NUMERIC(5, 2),
+    "inseam" NUMERIC(5, 2),
+    "thigh" NUMERIC(5, 2),
+
+    PRIMARY KEY("client_id", "measured_date"),
     FOREIGN KEY("client_id") REFERENCES "clients"("id")
 );
