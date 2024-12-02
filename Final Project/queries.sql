@@ -48,11 +48,15 @@ WHERE "name" = 'Electronics';
 
 -- Add a new customer
 INSERT INTO "customers" ("first_name", "last_name", "phone_number", "address")
-VALUES ('Carlos', 'Martínez', '555-1234', 'Calle Falsa 123');
+VALUES ('Sander', 'Sierra', '555-1234', 'Calle Falsa 123');
 
 -- Add a new supplier
 INSERT INTO "suppliers" ("name", "email", "website_url", "address")
 VALUES ('Supplier XYZ', 'contact@xyz.com', 'http://xyz.com', 'Av. Siempre Viva 456');
+
+-- Add a new category
+INSERT INTO "categories" ("name")
+VALUES ('Electronics');
 
 -- Add a new product
 INSERT INTO "products" ("name", "price", "description", "category_id", "supplier_id")

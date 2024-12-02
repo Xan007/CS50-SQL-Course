@@ -1,3 +1,9 @@
+-   your project’s title; **StoreTracker**
+-   your name; Sander Sierra
+-   your GitHub and edX usernames;  Xan007, SanderSierra
+-   your city and country; Colombia, Villavicencio
+-   and, the date you have recorded this video. 2/12/2024
+
 
 # Design Document
 By Sander Sierra
@@ -7,7 +13,7 @@ https://www.roblox.com/home
 
 ## Scope
 
-The database for this **supermarket** includes all entities necessary to facilitate the management of customers, products, and transactions, ensuring the smooth operation of day-to-day activities. The scope of the database includes:
+The database for this **store** includes all entities necessary to facilitate the management of customers, products, and transactions, ensuring the smooth operation of day-to-day activities. The scope of the database includes:
 
 -   **Customers**, with basic identifying information such as name, contact details, phone number, and address to track customer transactions and engagement.
 -   **Categories**, which classify products into groups (e.g., beverages, snacks, produce).
