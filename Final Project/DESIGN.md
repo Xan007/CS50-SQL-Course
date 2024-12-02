@@ -1,8 +1,12 @@
-# Design Document
-By Sander Sierra
 
-Video overview: 
 
+
+# StoreTracker Design Document
+-   Project’s title: **StoreTracker**
+-   Name: Sander Sierra
+-   Github: Xan007
+-  edX: SanderSierra
+-  Location: Villavicencio, Colombia
 
 ## Scope
 
@@ -11,8 +15,8 @@ The database for this **store** includes all entities necessary to facilitate th
 -   **Customers**, with basic identifying information such as name, contact details, phone number, and address to track customer transactions and engagement.
 -   **Categories**, which classify products into groups (e.g., beverages, snacks, produce).
 -   **Suppliers**, detailing the companies responsible for providing products to the supermarket.
--   **Products**, containing information about each item sold, such as name, price, description, associated category, and supplier.
--   **Invoices**, linking customers to products purchased and tracking details such as quantity, date of purchase, and total amounts.
+-   **Products**, containing information about each item that can be sold. The information contains name, price, description, associated category, and supplier.
+-   **Invoices**, linking customers to products purchased and tracking details such as quantity, date of purchase.
 -   **Invoice Items**, which track the individual products purchased within each invoice, enabling the system to manage multiple items per transaction.
 
 Out of scope are elements like purchases from suppliers, including transactions where the supermarket buys products from suppliers, as well as employee management, such as roles, schedules, and payroll details.
