@@ -1,15 +1,8 @@
--   your project’s title; **StoreTracker**
--   your name; Sander Sierra
--   your GitHub and edX usernames;  Xan007, SanderSierra
--   your city and country; Colombia, Villavicencio
--   and, the date you have recorded this video. 2/12/2024
-
-
 # Design Document
 By Sander Sierra
 
 Video overview: 
-https://www.roblox.com/home
+
 
 ## Scope
 
