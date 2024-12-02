@@ -1,54 +1,92 @@
--- Clients table
-CREATE TABLE "clients" (
-    "id" INTEGER,
+-- Represents customers that buy products
+CREATE TABLE "customers" (
+    "customer_id" INTEGER,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
-
-    -- Phone numbers must be between 10 and 15 characters long
-    "phone" TEXT NOT NULL CHECK(
-        LENGTH(phone) BETWEEN 10 AND 15
-    ),
-
+    "phone_number" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-
-    PRIMARY KEY("id")
+    PRIMARY KEY("customer_id")
 );
 
--- Orders table, keeps track of the status, price, the date when it was ordered, and delivered if applicable
--- The shipping address can be null because the client may claim the order directly
-CREATE TABLE "orders" (
-    "id" INTEGER,
-    "client_id" INTEGER,
-
-    "status" TEXT NOT NULL CHECK("status" IN ("pending", "started", "finished", "delivered")) DEFAULT "pending",
-    "price" NUMERIC CHECK("price" >= 0),
-    "order_date" NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "deliver_date" NUMERIC,
-    "shipping_address" TEXT,
-
-    PRIMARY KEY("id"),
-    FOREIGN KEY("client_id") REFERENCES "clients"("id")
+-- Represents product categories
+CREATE TABLE "categories" (
+    "category_id" INTEGER,
+    "name" TEXT NOT NULL,
+    PRIMARY KEY("category_id")
 );
 
--- Client Measurements table, stores measurements related to clients.
--- The composite primary key (client_id, measured_date) ensures that each client
--- can have only one set of measurements per date.
-CREATE TABLE "client_measurements" (
-    "client_id" INTEGER,
-    "measured_date" NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    "height" NUMERIC(5, 2),
-    "chest" NUMERIC(5, 2),
-    "waist" NUMERIC(5, 2),
-    "hips" NUMERIC(5, 2),
-    "neck" NUMERIC(5, 2),
-    "sleeve" NUMERIC(5, 2),
-    "back" NUMERIC(5, 2),
-    "front_waist" NUMERIC(5, 2),
-    "back_waist" NUMERIC(5, 2),
-    "inseam" NUMERIC(5, 2),
-    "thigh" NUMERIC(5, 2),
-
-    PRIMARY KEY("client_id", "measured_date"),
-    FOREIGN KEY("client_id") REFERENCES "clients"("id")
+-- Represents suppliers providing products to the supermarket, storing their contact and business details.
+CREATE TABLE "suppliers" (
+    "supplier_id" INTEGER,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "website_url" TEXT,
+    "address" TEXT NOT NULL,
+    PRIMARY KEY("supplier_id")
 );
+
+-- Represents products sold in the supermarket, linking each product to a category and a supplier.
+CREATE TABLE "products" (
+    "product_id" INTEGER,
+    "name" TEXT NOT NULL,
+    "price" REAL NOT NULL CHECK("price" >= 0),
+    "description" TEXT,
+    "category_id" INTEGER,
+    "supplier_id" INTEGER,
+    PRIMARY KEY("product_id"),
+    FOREIGN KEY("category_id") REFERENCES "categories"("category_id"),
+    FOREIGN KEY("supplier_id") REFERENCES "suppliers"("supplier_id")
+);
+
+-- Represents sales transactions, linking customers to their respective invoices.
+CREATE TABLE "invoices" (
+    "invoice_id" INTEGER,
+    "customer_id" INTEGER NOT NULL,
+    "date" NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY("invoice_id"),
+    FOREIGN KEY("customer_id") REFERENCES "customers"("customer_id")
+);
+
+-- Represents individual items in an invoice, linking products to invoices with quantities.
+CREATE TABLE "invoice_items" (
+    "invoice_id" INTEGER NOT NULL,
+    "product_id" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL CHECK("quantity" >= 0),
+    PRIMARY KEY("invoice_id", "product_id"),
+    FOREIGN KEY("invoice_id") REFERENCES "invoices"("invoice_id"),
+    FOREIGN KEY("product_id") REFERENCES "products"("product_id")
+);
+
+-- INDEXES
+
+-- Indexes for the "customers" table:
+CREATE INDEX "customer_name_search" ON "customers" ("first_name", "last_name");
+
+-- Indexes for the "invoices" table:
+CREATE INDEX "invoice_customer_id_search" ON "invoices" ("customer_id");
+
+-- Indexes for the "categories" table:
+CREATE INDEX "category_name_search" ON "categories" ("name");
+
+-- Indexes for the "products" table:
+CREATE INDEX "product_category_id_search" ON "products" ("category_id");
+CREATE INDEX "product_supplier_id_search" ON "products" ("supplier_id");
+CREATE INDEX "products_product_id_search" ON "products" ("product_id");
+
+-- Indexes for the "invoice_items" table:
+CREATE INDEX "invoice_items_invoice_id_search" ON "invoice_items" ("invoice_id");
+CREATE INDEX "invoice_items_product_id_search" ON "invoice_items" ("product_id");
+
+--- VIEWS
+CREATE VIEW "invoice_totals" AS
+SELECT "invoice_id", SUM("products"."price" * "invoice_items"."quantity") AS total
+FROM "invoice_items"
+JOIN "products" ON "invoice_items"."product_id" = "products"."product_id"
+GROUP BY "invoice_id";
+
+CREATE VIEW "category_sales" AS
+SELECT "categories"."name", SUM("invoice_items"."quantity") AS total_products_sold
+FROM "invoice_items"
+JOIN "products" ON "invoice_items"."product_id" = "products"."product_id"
+JOIN "categories" ON "products"."category_id" = "categories"."category_id"
+GROUP BY "categories"."name";
