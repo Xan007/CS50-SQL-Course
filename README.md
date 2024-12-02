@@ -1,6 +1,6 @@
 # CS50 SQL - Harvard University
 
-This repository contains the work completed as part of the course [CS50’s Introduction to Databases with SQL](https://cs50.harvard.edu/sql/2024/), offered by [Harvard University](https://cs50.harvard.edu/sql/2024/). 
+This repository contains the work completed as part of the course [CS50’s Introduction to Databases with SQL](https://cs50.harvard.edu/sql/2024/), offered by [Harvard University](https://www.harvard.edu). 
 
 This repository includes all the assignments, exercises, and solutions from the course, aimed at learning and mastering SQL.
 
